@@ -1,0 +1,26 @@
+MapleBot
+==========
+
+MapleBot is a simple XMPP bot built with nodejs.  Its built using a
+number of configurable tasks.  Each task binds a set of commands to the
+bot.  When the bot encounters a command it knows.  The connected
+function is run.  MapleBot makes a great bot to use on company jabber
+networks, and can easily be trained to do things like send reminders or
+get the weather.
+
+Configuration
+-------------
+
+Included in the source is a sample configuration file,  fill out the
+configuration values to get MapleBot running.
+
+Creating Tasks
+--------------
+
+
+Running MapleBot
+----------------
+
+After setting up the configuration file, you can start the bot using
+
+	node bot.js
