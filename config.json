@@ -1,0 +1,9 @@
+{
+	'username': 'you@jabber.com',
+	'password': 'sekret',
+	'room': 'foo@conference.jabber.com',
+	'nick' : 'bert',
+	'tasks': {
+		'QueueManager': './lib/queue-manager'
+	}
+}
