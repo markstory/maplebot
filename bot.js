@@ -3,9 +3,12 @@
 //  1. Set config variables
 //  2. Run `node bot.js`
 
-var sys = require('sys');
-var util = require('util');
-var xmpp = require('node-xmpp');
+var sys = require('sys'),
+	util = require('util'),
+	xmpp = require('node-xmpp');
+
+var config = require('./config.json');
+
 var QueueManager = require('./lib/queue-manager').QueueManager;
 
 // Config 
@@ -15,8 +18,8 @@ var room_jid = " chat room here ";
 var room_nick = "bert";
 
 var cl = new xmpp.Client({
-  jid: jid + '/bot',
-  password: password
+  jid: config.username + '/bot',
+  password: config.password
 });
 
 // Log all data received
@@ -34,7 +37,7 @@ cl.on('online', function() {
    );
 
   // join room (and request no chat history)
-  cl.send(new xmpp.Element('presence', { to: room_jid+'/'+room_nick }).
+  cl.send(new xmpp.Element('presence', { to: config.room + '/' + config.nick }).
     c('x', { xmlns: 'http://jabber.org/protocol/muc' })
   );
 
@@ -57,7 +60,7 @@ cl.on('stanza', function(stanza) {
   }
 
   // ignore messages we sent
-  if (stanza.attrs.from == room_jid+'/'+room_nick) {
+  if (stanza.attrs.from == config.room + '/' + config.nick) {
     return;
   }
 
@@ -74,7 +77,7 @@ cl.on('stanza', function(stanza) {
 		var messageText = message.substring(c.length);
 		response = commands[c](messageText, response);
 		if (response && response.length) {
-			var element = new xmpp.Element('message', {to: room_jid, type: 'groupchat'})
+			var element = new xmpp.Element('message', {to: config.room, type: 'groupchat'})
 				.c('body').t(response);
 			cl.send(element);
 		}
