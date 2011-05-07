@@ -41,7 +41,6 @@ vows.describe('Bot').addBatch({
 			bot.commands['!test'] = function (text) {
 				return text;
 			};
-			
 			return bot;
 		},
 
