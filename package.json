@@ -1,0 +1,26 @@
+{
+  "name": "maplebot",
+  "description": "A simple extensible xmpp bot client.",
+  "version": "0.0.1-dev",
+  "homepage": "http://github.com/markstory/maplebot",
+  "keywords": [
+    "xmpp", "bot", "client"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/markstory/maplebot.git"
+  },
+  "author": "Mark Story <mark@mark-story.com> (http://mark-story.com)",
+  "directories": {
+    "lib": "lib"
+  },
+  "scripts": {
+    "test": "vows"
+  },
+  "engines": {
+    "node": "0.4"
+  },
+  "dependencies": {
+	"vows": ">=0.5.2"
+  }
+}
