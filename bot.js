@@ -5,7 +5,8 @@
 
 var sys = require('sys'),
 	util = require('util'),
-	xmpp = require('node-xmpp');
+	xmpp = require('node-xmpp'),
+	bot = require('./lib/bot');
 
 try {
 	var config = require('./config.json');
@@ -13,8 +14,6 @@ try {
 	console.error('ERROR - No configuration file found. Make a config.json');
 	process.exit(1);
 }
-
-var QueueManager = require('./lib/queue-manager').QueueManager;
 
 var cl = new xmpp.Client({
     jid: config.username + '/bot',
@@ -47,7 +46,6 @@ cl.on('online', function() {
 	}, 30000);
 
 	cl.onlineTime = new Date();
-	cl.commands = getCommands(config);
 });
 
 cl.on('stanza', function(stanza) {
@@ -82,22 +80,16 @@ cl.on('stanza', function(stanza) {
 	if (!body) {
 		return;
 	}
-	var message = body.getText();
 
-	for (var c in cl.commands) {
-		if (cl.commands.hasOwnProperty(c) && message.indexOf(c) === 0) {
-			var response = '';
-			var messageText = message.substring(c.length);
-			response = cl.commands[c](messageText, response);
-			if (response && response.length) {
-				var element = new xmpp.Element('message', {to: config.room, type: 'groupchat'})
-					.c('body').t(response);
-				cl.send(element);
-			}
-		}
+	var response = chatBot.handleMessage(body.getText());
+	if (response) {
+		var element = new xmpp.Element('message', {to: config.room, type: 'groupchat'})
+			.c('body').t(response);
+		cl.send(element);
 	}
-
 });
+
+var chatBot = new bot.Bot(config);
 
 // Parse xmpp timestamps into a javascript date object.
 // CCYYMMDDThh:mm:ss
@@ -109,31 +101,5 @@ function parseMessageDelay(time) {
 		minute = time.substring(12, 14),
 		second = time.substring(15, 17);
 	return new Date(year, month, day, hour, minute, second);
-}
-
-// Get the configured task objects and their commands.
-// Calls .bindCommands on each task.
-function getCommands(config) {
-	if (!config.tasks) {
-		console.error('ERROR - No configured tasks');
-		process.exit(1);
-	}
-	var commandList = {};
-	Object.keys(config.tasks).forEach(function (task) {
-		var mod, taskObject;
-		try {
-			mod = require(config.tasks[task]);
-		} catch (e) {
-			console.error('ERROR - Could not load module ' + config.tasks[task]);
-			process.exit(1);
-		}
-		if (!mod[task]) {
-			console.error('ERROR - Could not find task ' + task + ' in module ' + config.tasks[task]);
-			process.exit(1);
-		}
-		taskObject = new mod[task]();
-		taskObject.bindCommands(commandList);
-	});
-	return commandList;
 }
 

@@ -21,6 +21,7 @@ vows.describe('QueueManager Task').addBatch({
 			assert.equal('Hotfix queue is: [1234, 567, 89]', response);
 		}
 	},
+
 	'removing from the queue': {
 		topic: function () {
 			return new QueueManager();
