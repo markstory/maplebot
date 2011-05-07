@@ -8,6 +8,16 @@ function is run.  MapleBot makes a great bot to use on company jabber
 networks, and can easily be trained to do things like send reminders or
 get the weather.
 
+Dependencies
+------------
+
+Maplebot requires the following:
+
+- node-xmpp
+- vows
+
+You can install both using npm.
+
 Configuration
 -------------
 
