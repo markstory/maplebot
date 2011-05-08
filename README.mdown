@@ -28,6 +28,15 @@ Creating Tasks
 --------------
 
 
+Built in Tasks
+--------------
+
+There are a few built-in tasks, that do a few things I need on a day to
+day basis:
+
+- QueueManager - manages queues of things to do.
+- Weather - Query google's weather api to get local forecasts.
+
 Running MapleBot
 ----------------
 
