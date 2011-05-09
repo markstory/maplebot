@@ -22,11 +22,37 @@ Configuration
 -------------
 
 Included in the source is a sample configuration file,  fill out the
-configuration values to get MapleBot running.
+configuration values to get MapleBot running. Some of the most important
+configuration options are:
+
+- `username` The login name MapleBot should use when joining the jabber
+  service.
+- `password` The password to use.
+- `room` The room you want the bot to join.
+- `nick` The nickname the bot should use.
+- `tasks` The tasks the bot should bind.
 
 Creating Tasks
 --------------
 
+Tasks in MapleBot are where you build the commands and features you want
+MapleBot to have.  Each task binds a number of commands to the bot.
+When the bot receives a message in the group chat that starts with the
+command value, it dispatches the remainder of the message to the bound
+function.  There is a built in task base to help facilitate building
+tasks.  Each task is expected to have a `bindCommands` method that
+accepts an object that commands are inserted into.  See the provided
+QueueManager or Weather tasks for how to build a simple task.
+
+Creating responses
+------------------
+
+Responses can be created in a few different formats, each with different
+features.  First, you can use plain text responses.  These are directly
+output to the group chat.  You can also uses promises.  There is a
+simple built-in promise object in the task module.  Promises are ideal
+for tasks that require additional asynchronous work to be done.  By
+resolving the promise, the response will be delivered.
 
 Built in Tasks
 --------------
@@ -43,3 +69,17 @@ Running MapleBot
 After setting up the configuration file, you can start the bot using
 
 	node bot.js
+
+Calling commands
+----------------
+
+You call bot commands by sending the group chat a message starting with
+one of the bound command keywords.  For example, if you were using the
+`Weather` task, you could send:
+
+	!weather toronto,ontario
+
+to the group chat.  This will cause MapleBot to query the google weather
+api and reply with the result.
+
+
