@@ -1,5 +1,6 @@
 var client = require('../lib/client'),
 	bot = require('../lib/bot'),
+	task = require('../lib/task'),
 	ltx = require('ltx'),
 	sinon = require('sinon'),
 	vows = require('vows'),
@@ -89,6 +90,14 @@ vows.describe('Client').addBatch({
 		'delivers text messages': function (topic) {
 			topic.send('hello world');
 			assert.ok(topic.client.send.called);
+		},
+
+		'delivers promises': function (topic) {
+			var p = new task.Promise();
+			topic.send(p);
+			p.resolve('told you so');
+
+			assert.ok(topic.client.send.called, 'Send was never called.');
 		}
 	}
 }).export(module);
