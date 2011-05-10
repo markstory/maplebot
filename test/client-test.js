@@ -31,6 +31,9 @@ vows.describe('Client').addBatch({
 			message = topic.client.messages.pop();
 			assert.equal(message.name, 'show');
 			assert.equal(message.parent.name, 'presence');
+		},
+		'joins multiple rooms': function (topic) {
+
 		}
 	},
 
@@ -98,6 +101,9 @@ vows.describe('Client').addBatch({
 			p.resolve('told you so');
 
 			assert.ok(topic.client.send.called, 'Send was never called.');
+		},
+		'sends messages to the right rooms': function (topic) {
+		
 		}
 	}
 }).export(module);
