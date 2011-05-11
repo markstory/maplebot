@@ -24,16 +24,32 @@ vows.describe('Client').addBatch({
 			assert.equal(2, topic.client.messages.length);
 			var message = topic.client.messages.pop();
 
-			assert.equal(message.name, 'history');
-			assert.equal(message.attrs.seconds, 1);
-			assert.equal(message.parent.name, 'x');
+			assert.equal('history', message.name);
+			assert.equal(1, message.attrs.seconds);
+			assert.equal('x', message.parent.name);
 
 			message = topic.client.messages.pop();
-			assert.equal(message.name, 'show');
-			assert.equal(message.parent.name, 'presence');
+			assert.equal('show', message.name);
+			assert.equal('presence', message.parent.name);
 		},
-		'joins multiple rooms': function (topic) {
+		'joins multiple rooms': function () {
+			var topic = new client.Client({room:['test', 'test2'], nick: 'bot'});
+			topic.client = {
+				messages: [],
+				send: function (message) {
+					this.messages.push(message);
+				}
+			};
+			topic.online();
+			assert.equal(topic.client.messages.length, 3);
 
+			var msg = topic.client.messages.pop();
+			assert.equal('history', msg.name);
+			assert.equal('test2/bot', msg.parent.parent.attrs.to);
+
+			var msg = topic.client.messages.pop();
+			assert.equal('history', msg.name);
+			assert.equal('test/bot', msg.parent.parent.attrs.to);
 		}
 	},
 
