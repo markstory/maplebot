@@ -21,7 +21,6 @@ vows.describe('QueueManager Task').addBatch({
 			assert.equal('Hotfix queue is: [1234, 567, 89]', response);
 		}
 	},
-
 	'removing from the queue': {
 		topic: function () {
 			return new QueueManager();
@@ -31,7 +30,22 @@ vows.describe('QueueManager Task').addBatch({
 			var response = topic.remove();
 			assert.equal('The Hotfix queue is empty, well done!', response);
 		}
+	},
+	'shuffling the queue': {
+		topic: function () {
+			var queue = new QueueManager();
+			queue.add('123');
+			queue.add('456');
+			queue.add('789');
+			return queue;
+		},
+		'next promotes, delay pushes back': function (topic) {
+			var ret = topic.next('456');
+			assert.equal('Hotfix queue is: [456, 123, 789]', ret);
 
+			ret = topic.delay('456');
+			assert.equal('Hotfix queue is: [123, 456, 789]', ret);
+		}
 	}
 
 }).export(module);
