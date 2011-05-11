@@ -10,15 +10,15 @@ vows.describe('QueueManager Task').addBatch({
 
 		'works when there is texts': function(topic) {
 			var response = topic.add('1234');
-			assert.equal('Hotfix queue is: [1234]', response);
+			assert.equal('Hotfix queue is: [1234]', response.body);
 
 			response = topic.add('567');
-			assert.equal('Hotfix queue is: [1234, 567]', response);
+			assert.equal('Hotfix queue is: [1234, 567]', response.body);
 		},
 
 		'trims space off': function (topic) {
 			var response = topic.add('   89  ');
-			assert.equal('Hotfix queue is: [1234, 567, 89]', response);
+			assert.equal('Hotfix queue is: [1234, 567, 89]', response.body);
 		}
 	},
 	'removing from the queue': {
@@ -28,7 +28,7 @@ vows.describe('QueueManager Task').addBatch({
 		'shortens the list': function (topic) {
 			topic.add('1234');
 			var response = topic.remove();
-			assert.equal('The Hotfix queue is empty, well done!', response);
+			assert.equal('The Hotfix queue is empty, well done!', response.body);
 		}
 	},
 	'shuffling the queue': {
@@ -41,10 +41,10 @@ vows.describe('QueueManager Task').addBatch({
 		},
 		'next promotes, delay pushes back': function (topic) {
 			var ret = topic.next('456');
-			assert.equal('Hotfix queue is: [456, 123, 789]', ret);
+			assert.equal('Hotfix queue is: [456, 123, 789]', ret.body);
 
 			ret = topic.delay('456');
-			assert.equal('Hotfix queue is: [123, 456, 789]', ret);
+			assert.equal('Hotfix queue is: [123, 456, 789]', ret.body);
 		}
 	}
 
