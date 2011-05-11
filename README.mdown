@@ -48,11 +48,27 @@ Creating responses
 ------------------
 
 Responses can be created in a few different formats, each with different
-features.  First, you can use plain text responses.  These are directly
-output to the group chat.  You can also uses promises.  There is a
-simple built-in promise object in the task module.  Promises are ideal
-for tasks that require additional asynchronous work to be done.  By
-resolving the promise, the response will be delivered.
+features:
+
+- *Plain text* These are directly output to the group chat.  
+- *Objects* Simple object responses allow you to respond with both a
+  subject and a body.  Useful for bot tasks that need to set the topic.
+- *Promises* There is a simple built-in promise object in the task module.  Promises are ideal
+  for tasks that require additional asynchronous work to be done.  By resolving the promise, 
+  the response will be delivered.
+
+A response using a promise would look like:
+
+<pre>
+var task = require('./lib/task');
+
+function doSomething() {
+	var promise = new task.Promise();
+	doSomethingAsync(promise);
+	return promise;
+}
+</pre>
+
 
 Built in Tasks
 --------------
