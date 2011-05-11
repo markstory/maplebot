@@ -118,8 +118,23 @@ vows.describe('Client').addBatch({
 
 			assert.ok(topic.client.send.called, 'Send was never called.');
 		},
-		'sends messages to the right rooms': function (topic) {
-		
+	},
+	'sends messages to the right rooms': {
+		topic: function () {
+			var clientStub = {
+				send: sinon.spy()
+			};
+
+			var topic = new client.Client({room: 'test', nick:'bot'}, {});
+			topic.client = clientStub;
+			return topic;
+		},
+		'works': function (topic) {
+			topic.send('message', 'room/bot');
+
+			assert.ok(topic.client.send.called);
+			var call = topic.client.send.getCall(0);
+			assert.equal('room/bot', call.args[0].parent.attrs.to);
 		}
 	}
 }).export(module);
