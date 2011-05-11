@@ -107,17 +107,32 @@ vows.describe('Client').addBatch({
 		},
 
 		'delivers text messages': function (topic) {
+			topic.client.send = sinon.spy();
 			topic.send('hello world');
 			assert.ok(topic.client.send.called);
 		},
 
 		'delivers promises': function (topic) {
+			topic.client.send = sinon.spy();
 			var p = new task.Promise();
 			topic.send(p);
 			p.resolve('told you so');
 
 			assert.ok(topic.client.send.called, 'Send was never called.');
 		},
+		'sends subject messages too': function (topic) {
+			topic.client.send = sinon.spy();
+			topic.send({body: 'This is text', subject: 'This is a topic!'});
+
+			assert.ok(topic.client.send.called);
+			assert.equal(2, topic.client.send.callCount);
+			
+			var call = topic.client.send.getCall(0);
+			assert.equal('subject', call.args[0].name);
+
+			call = topic.client.send.getCall(1);
+			assert.equal('body', call.args[0].name);
+		}
 	},
 	'sends messages to the right rooms': {
 		topic: function () {
