@@ -59,16 +59,23 @@ features:
 
 A response using a promise would look like:
 
-<pre>
-var task = require('./lib/task');
+	var task = require('./lib/task');
 
-function doSomething() {
-	var promise = new task.Promise();
-	doSomethingAsync(promise);
-	return promise;
-}
-</pre>
+	function doSomething() {
+		var promise = new task.Promise();
+		doSomethingAsync(promise);
+		return promise;
+	}
 
+An object response could look like:
+
+	var response = {
+		body: 'I am message text',
+		subject: 'I will be set as the group chat topic in most clients.'
+	};
+
+You can use object responses with both synchronous responses, as well as
+promises.
 
 Built in Tasks
 --------------
