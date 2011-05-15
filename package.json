@@ -22,6 +22,7 @@
   },
   "dependencies": {
 	"vows": ">=0.5.8",
-	"sinon": "==1.1.0"
+	"sinon": "==1.1.0",
+	"node-xmpp": ">=0.2.6"
   }
 }
