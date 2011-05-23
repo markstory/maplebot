@@ -46,6 +46,7 @@ tasks.  Each task is expected to have a `bindCommands` method that
 accepts an object that commands are inserted into.  See the provided
 QueueManager or Weather tasks for how to build a simple task.
 
+
 Creating responses
 ------------------
 
@@ -54,7 +55,7 @@ features:
 
 - *Plain text* These are directly output to the group chat.  
 - *Objects* Simple object responses allow you to respond with both a
-  subject and a body.  Useful for bot tasks that need to set the topic.
+  subject and a body, and other properties.  Useful for bot tasks that need to set the topic.
 - *Promises* There is a simple built-in promise object in the task module.  Promises are ideal
   for tasks that require additional asynchronous work to be done.  By resolving the promise, 
   the response will be delivered.
@@ -77,7 +78,11 @@ An object response could look like:
 	};
 
 You can use object responses with both synchronous responses, as well as
-promises.
+promises.  When using object responses you can direct the message to
+specific rooms for multi-room bots, by setting the `room` property.  The
+room property lets you reply directly to people from a groupchat room.  You
+can also change set the `type` key to specify whether or not you want to
+send a 'direct' or 'groupchat' type of message.
 
 Built in Tasks
 --------------
@@ -87,6 +92,8 @@ day basis:
 
 - QueueManager - manages queues of things to do.
 - Weather - Query google's weather api to get local forecasts.
+- Help - Display help text about all the other tasks.  Called with
+  `!help`
 
 Running MapleBot
 ----------------
@@ -105,6 +112,18 @@ one of the bound command keywords.  For example, if you were using the
 	!weather toronto,ontario
 
 to the group chat.  This will cause MapleBot to query the google weather
-api and reply with the result.
+api and reply with the result.  Whenever a task command is called, it
+will be supplied one argument, a request.  This request contains a
+number of properties that you can use:
+
+- `room` The room the message came from.
+- `from` The person who sent the message.
+- `body` The message body text.
+- `type` Whether the the message was a direct or groupchat message.
+
+The requests can also be treated as a string, and appended into other
+text.  If a response doesn't contain a room the request's room will be
+used.
+
 
 
