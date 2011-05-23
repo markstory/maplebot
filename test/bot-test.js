@@ -32,6 +32,11 @@ vows.describe('Bot').addBatch({
 		'binds commands': function (topic) {
 			assert.ok(topic.commands['!qadd']);
 			assert.ok(topic.commands['!qls']);
+		},
+		'stores a reference to task objects': function (topic) {
+			assert.ok(topic.tasks[0], 'Missing task');
+			assert.ok(topic.tasks[0].commands);
+			assert.ok(topic.tasks[0].bindCommands);
 		}
 	},
 
