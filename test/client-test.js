@@ -23,7 +23,7 @@ vows.describe('Client').addBatch({
 				send: function (message) {
 					this.messages.push(message);
 				}
-			}
+			};
 			return topic;
 		},
 		'joins room with no history': function (topic) {
@@ -55,7 +55,7 @@ vows.describe('Client').addBatch({
 			assert.equal('history', msg.name);
 			assert.equal('test2/bot', msg.parent.parent.attrs.to);
 
-			var msg = topic.client.messages.pop();
+			msg = topic.client.messages.pop();
 			assert.equal('history', msg.name);
 			assert.equal('test/bot', msg.parent.parent.attrs.to);
 		}
@@ -109,21 +109,21 @@ vows.describe('Client').addBatch({
 
 		'delivers text messages': function (topic) {
 			topic.client.send = sinon.spy();
-			topic.send('hello world');
+			topic.send('hello world', {room:'test'});
 			assert.ok(topic.client.send.called);
 		},
 
 		'delivers promises': function (topic) {
 			topic.client.send = sinon.spy();
 			var p = new task.Promise();
-			topic.send(p);
+			topic.send(p, {room: 'test'});
 			p.resolve('told you so');
 
 			assert.ok(topic.client.send.called, 'Send was never called.');
 		},
 		'sends subject messages too': function (topic) {
 			topic.client.send = sinon.spy();
-			topic.send({body: 'This is text', subject: 'This is a topic!'});
+			topic.send({room: 'test', body: 'This is text', subject: 'This is a topic!'});
 
 			assert.ok(topic.client.send.called);
 			assert.equal(2, topic.client.send.callCount);
@@ -146,7 +146,12 @@ vows.describe('Client').addBatch({
 			return topic;
 		},
 		'works': function (topic) {
-			topic.send('message', 'room/bot');
+			var resp = {
+				body: 'message',
+				type: 'groupchat',
+				room: 'room/bot'
+			};
+			topic.send(resp, {});
 
 			assert.ok(topic.client.send.called);
 			var call = topic.client.send.getCall(0);
@@ -174,6 +179,9 @@ vows.describe('Client').addBatch({
 		},
 		'string cast gets body': function (topic) {
 			assert.equal('' + topic, 'hey');
+		},
+		'includes a type': function (topic) {
+			assert.equal('groupchat', topic.type);
 		}
 	}
 }).export(module);
