@@ -9,7 +9,9 @@ var client = require('../lib/client'),
 var fixtures = {
 	groupChat: "<message from='test@conference.jabber.company.com/Mark Story' to='mark@jabber.company.com/bot' type='groupchat' id='purple4ef0fdee'><body>hey</body></message>",
 
-	nonGroupChat: "<message from='test@conference.jabber.company.com/Mark Story' to='mark@jabber.company.com/bot' type='direct' id='purple4ef0fdee'><body>hey</body></message>",
+	nonGroupChat: "<message from='test@conference.jabber.company.com/Mark Story' to='mark@jabber.company.com/bot' type='direct' id='purple4ef0fdee'><body>hey direct</body></message>",
+
+	directMessage: "<message from='test@conference.jabber.company.com/Mark Story' to='mark@jabber.company.com/bot' type='direct' id='purple4ef0fdee'><body>hey direct</body></message>",
 
 	selfMessage: "<message from='test/bot' to='test/bot' type='groupchat' id='purple4ef0fdee'><body>hey</body></message>"
 };
@@ -75,19 +77,31 @@ vows.describe('Client').addBatch({
 			return topic;
 		},
 
-		'ignores messages not from groupchat': function (topic) {
-			var stanza = ltx.parse(fixtures.nonGroupChat);
+		'listens to messages sent direct to the bot': function (topic) {
+			topic.bot.handleMessage = sinon.stub();
+			topic.client.send = sinon.stub();
+
+			topic.bot.handleMessage.returns('Winning');
+			var stanza = ltx.parse(fixtures.directMessage);
 			topic.read(stanza);
-			assert.equal(false, topic.bot.handleMessage.called);
+
+			assert.ok(topic.bot.handleMessage.called);
+			assert.ok(topic.client.send.called);
 		},
 
 		'ignore messages from self': function (topic) {
+			topic.bot.handleMessage = sinon.stub();
+			topic.client.send = sinon.stub();
+
 			var stanza = ltx.parse(fixtures.selfMessage);
 			topic.read(stanza);
 			assert.equal(false, topic.bot.handleMessage.called);
 		},
 
 		'recieve messages': function (topic) {
+			topic.bot.handleMessage = sinon.stub();
+			topic.client.send = sinon.stub();
+
 			var stanza = ltx.parse(fixtures.groupChat);
 			topic.bot.handleMessage.returns('Winning');
 			topic.read(stanza);
