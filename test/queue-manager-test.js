@@ -19,6 +19,17 @@ vows.describe('QueueManager Task').addBatch({
 		'trims space off': function (topic) {
 			var response = topic.add('   89  ');
 			assert.equal('Hotfix queue is: [1234, 567, 89]', response.body);
+		},
+		
+		'can deal with requests': function (topic) {
+			var msg = {
+				body: '1112',
+				toString: function () {
+					return this.body;
+				}
+			}
+			var response = topic.add(msg);
+			assert.equal('Hotfix queue is: [1234, 567, 89, 1112]', response.body);
 		}
 	},
 	'removing from the queue': {
