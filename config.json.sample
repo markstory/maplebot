@@ -1,9 +1,18 @@
 module.exports = {
 	'username': 'you@jabber.company.com',
 	'password': 'sekret',
-	'room': 'nerd@conference.jabber.company.com',
+	'room': [
+		'nerd@conference.jabber.company.com',
+		'general@conference.jabber.company.com'
+	],
 	'nick' : 'bert',
 	'tasks': {
 		'QueueManager': './queue-manager'
+		'Help': './help',
+		'Weather': './weather'
+	},
+	'rooms': {
+		'nerd@conference.jabber.company.com': ['QueueManager', 'Help'],
+		'general@conference.jabber.company.com': ['Weather', 'Help']
 	}
 }
