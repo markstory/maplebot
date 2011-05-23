@@ -11,12 +11,14 @@ get the weather.
 Dependencies
 ------------
 
-Maplebot requires the following:
+You can install all of Maplebot's dependencies using `npm`.
 
-- node-xmpp
-- vows
+	npm install .
 
-You can install both using npm.
+This will install all the dependencies.  You can make sure things worked
+by running the tests:
+
+	npm test
 
 Configuration
 -------------

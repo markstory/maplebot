@@ -15,15 +15,18 @@
     "lib": "lib"
   },
   "scripts": {
-    "test": "vows"
+    "test": "vows test/*.js"
   },
   "engines": {
     "node": "0.4"
   },
   "dependencies": {
+	"node-xmpp": ">=0.2.6",
+	"jsdom": "==0.2.0"
+  },
+  "devDependencies": {
 	"vows": ">=0.5.8",
 	"sinon": "==1.1.1",
-	"node-xmpp": ">=0.2.6",
-	"jsdom": "0.2.0"
+	"ltx": "==0.0.5"
   }
 }
