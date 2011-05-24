@@ -15,4 +15,4 @@ module.exports = {
 		'nerd@conference.jabber.company.com': ['QueueManager', 'Help'],
 		'general@conference.jabber.company.com': ['Weather', 'Help']
 	}
-}
+};
