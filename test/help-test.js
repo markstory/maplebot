@@ -14,6 +14,9 @@ vows.describe('Help task').addBatch({
 						}
 					},
 					{
+						help: function () { }
+					},
+					{
 						help: 'I am string help'
 					},
 					{
