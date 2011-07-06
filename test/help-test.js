@@ -7,28 +7,31 @@ vows.describe('Help task').addBatch({
 	'collects help from other tasks': {
 		topic: function () {
 			var dummy = {
-				tasks: [
-					{
+				tasks: {
+					'function': {
 						help: function () {
 							return 'I am a function help';
 						}
 					},
-					{
+					'empty': {
 						help: function () { }
 					},
-					{
+					'string': {
 						help: 'I am string help'
 					},
-					{
+					'undefined': {
 						help: undefined
 					}
-				],
+				},
 				getRoomTasks: function () {
-					return this.tasks;
+					return Object.keys(this.tasks);
+				},
+				getTask: function (name) {
+					return this.tasks[name];
 				}
 			};
 			var topic = new help.Help(dummy);
-			return topic.show({room: 'room'});
+			return topic.show({});
 		},
 		'ignores undefined': function (topic) {
 			assert.ok(/undefined/.test(topic) === false);

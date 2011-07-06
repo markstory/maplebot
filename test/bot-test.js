@@ -30,9 +30,9 @@ vows.describe('Bot').addBatch({
 			assert.ok(topic.commands.QueueManager['!qls']);
 		},
 		'stores a reference to task objects': function (topic) {
-			assert.ok(topic.tasks[0], 'Missing task');
-			assert.ok(topic.tasks[0].commands);
-			assert.ok(topic.tasks[0].bindCommands);
+			assert.ok(topic.tasks['QueueManager'], 'Missing task');
+			assert.ok(topic.tasks['QueueManager'].commands);
+			assert.ok(topic.tasks['QueueManager'].bindCommands);
 		}
 	},
 	'message delegation': {
