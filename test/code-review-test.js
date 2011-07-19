@@ -10,9 +10,12 @@ vows.describe('CodeReview Task').addBatch({
 
 		'adds to the list': function(topic) {
 			var response = topic.add({from:'tom'});
-			assert.equal(response, 'Awaiting code review: [tom]');
+			assert.equal(response, 'Thanks, you will be part of code review today.');
 
 			response = topic.add({from:'jerry'});
+			assert.equal(response, 'Thanks, you will be part of code review today.');
+
+			response = topic.show();
 			assert.equal(response, 'Awaiting code review: [tom, jerry]');
 		},
 	},
@@ -23,7 +26,7 @@ vows.describe('CodeReview Task').addBatch({
 		'removes from the list': function (topic) {
 			topic.add({from:'petunia'});
 			var response = topic.remove({from:'petunia'});
-			assert.equal(response, 'Nobody needs code review. Get to work!');
+			assert.equal(response, "You've been removed from today's code review.");
 		}
 	},
 	'pairs properly': {
