@@ -46,6 +46,29 @@ tasks.  Each task is expected to have a `bindCommands` method that
 accepts an object that commands are inserted into.  See the provided
 QueueManager or Weather tasks for how to build a simple task.
 
+Configuring tasks
+----------------
+
+When defining tasks in your configuration file you can also pass in any
+additional configuration data for those tasks.
+
+	// in config.json
+	module.exports = {
+		tasks: {
+			'CodeReview': {
+				module: './code-review',
+				autoPairTime: '10:30:00'
+			}
+		}
+	};
+
+When using an object for a task definition, you must include the
+`module` key.  It has to point at the file containing the task you want
+to use.  All other keys + values will be passed to the tasks's
+constructor as the second parameter.  The first is the `bot` the task
+is bound to.
+
+
 
 Creating responses
 ------------------
@@ -94,6 +117,7 @@ day basis:
 - Weather - Query google's weather api to get local forecasts.
 - Help - Display help text about all the other tasks.  Called with
   `!help`
+- CodeReview - Helps do random pair ups for daily code reviews.
 
 Running MapleBot
 ----------------
