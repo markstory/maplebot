@@ -35,6 +35,25 @@ vows.describe('Bot').addBatch({
 			assert.ok(topic.tasks['QueueManager'].bindCommands);
 		}
 	},
+	'addTask passes settings along': {
+		topic: function () {
+			var config = {
+				tasks: {
+					'QueueManager': '../lib/queue-manager',
+					'ConfigTest': {
+						module: '../test/fixtures',
+						key: 'value'
+					}
+				}
+			};
+			return new Bot(config);
+		},
+
+		'task has configuration': function (topic) {
+			var task = topic.getTask('ConfigTest');
+			assert.deepEqual({key: 'value'}, task.config);
+		}
+	},
 	'message delegation': {
 		topic: function () {
 			var bot = new Bot({tasks: {}});
